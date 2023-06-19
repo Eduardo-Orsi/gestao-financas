@@ -1,0 +1,26 @@
+
+.wrapper-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.table-container {
+    margin-top: 40px;
+}
+
+.bogo-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+}
+
+.content {
+    width: 100%;
+    padding: 50px;
+    height: 100vh;
+    overflow-y: scroll;
+}
+
+.inside-container {
+    margin-top: 40px;
+}

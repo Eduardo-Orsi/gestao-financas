@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="bogo-wallet-container">
+    <div class="wrapper-container">
+        <h2> Adicionar Transação</h2>
+    </div>
+    <div class="container">
+        <div class="table-container">
+            <div>
+                <form class="needs-validation" method="POST">
+                  {% csrf_token %}
+                  <div class="row g-3">
+        
+                    <div class="col-12">
+                      <label for="username" class="form-label">Nome</label>
+                      <div class="input-group has-validation">
+                        <input type="text" class="form-control" id="name" placeholder="Nome do transação" required>
+                      </div>
+                    </div>
+        
+                    <div class="col-12">
+                      <label for="file-type" class="form-label">Descrição</label>
+                      <input name="file-type" type="text" class="form-control" id="file-type" placeholder="Descrição do transação">
+                    </div>
+        
+                  <button class="w-100 btn btn-primary btn-lg" type="submit">Criar</button>
+                </form>
+              </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

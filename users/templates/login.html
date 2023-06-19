@@ -1,0 +1,32 @@
+{% extends 'users_base.html' %}
+{% block content %}
+
+    <div class="login">
+
+        <form method="POST" class="form-container">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+
+                <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+
+                <label for="floatingInput">E-mail</label>
+
+            </div>
+
+            <div class="form-floating">
+
+                <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+
+                <label for="floatingPassword">Senha</label>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary mx-auto btn-lg">Login</button>
+
+            <p class="register">Não tem conta? <a href="{% url 'register' %}">Registre-se</a></p>
+
+        </form>
+
+    </div>
+
+{% endblock %}

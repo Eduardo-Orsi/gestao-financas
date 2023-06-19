@@ -1,0 +1,50 @@
+<style>
+    .sidebar {
+        height: 100vh;
+        overflow-y: scroll;
+    }
+</style>
+
+
+<div class="siderbar d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
+    <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <span class="fs-4"><strong>Bogo Finance</strong></span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li>
+            <a href="{% url 'transactions' %}" class="nav-link text-white {% if 'transactions' in request.path %}active{% endif %}">
+                Transações
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'wallet' %}" class="nav-link text-white {% if 'wallet' in request.path %}active{% endif %}">
+                Carteira
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'report' %}" class="nav-link text-white {% if 'report' in request.path %}active{% endif %}">
+                Relatórios
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'categorys' %}" class="nav-link text-white {% if 'categorys' in request.path %}active{% endif %}">
+                Categorias
+            </a>
+        </li>
+    </ul>
+    <hr>
+    <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <strong>{{user}}</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+            <li><a class="dropdown-item" href="{% url 'profile' %}">Perfil</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Encerrar Sessão</a></li>
+        </ul>
+    </div>
+</div>

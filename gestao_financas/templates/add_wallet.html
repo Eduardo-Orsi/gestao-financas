@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="bogo-wallet-container">
+    <div class="wrapper-container">
+      {% if wallet %}
+        <h2> Atualizar Carteira</h2>
+        <button class="add-wallet btn btn-danger">
+          <a class="btn btn-danger" href="{% url 'wallet' wallet.id %}">Deletar Carteira</a>
+        </button>
+      {% else %}
+        <h2> Adicionar Carteira</h2>
+      {% endif %}
+    </div>
+    <div class="container">
+        <div class="table-container">
+            <div>
+                <form class="needs-validation" method="POST">
+                  {% csrf_token %}
+                  <div class="row g-3">
+        
+                    <div class="col-12">
+                      <label for="username" class="form-label">Nome</label>
+                      <div class="input-group has-validation">
+                        <input name="name" type="text" class="form-control" id="name" placeholder="Nome Carteira" required value="{% if wallet.name %}{{ wallet.name }}{% endif %}">
+                      </div>
+                    </div>
+        
+                    <div class="col-12">
+                      <label for="description" class="form-label">Descrição <span class="text-body-secondary">(Optional)</span></label>
+                      <input name="description" type="text" class="form-control" id="description" placeholder="Descrição da certeira" value="{% if wallet.description %}{{ wallet.description }}{% endif %}">
+                    </div>
+        
+                  <button class="w-100 btn btn-primary btn-lg" type="submit">
+                    {% if wallet %}
+                      Atualizar
+                    {% else %}
+                      Criar
+                    {% endif %}
+                  </button>
+                </form>
+              </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

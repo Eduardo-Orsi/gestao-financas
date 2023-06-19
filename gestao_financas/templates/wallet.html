@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="bogo-wallet-container">
+        <div class="wrapper-container">
+            <h2>Carteira</h2>
+            <button class="add-wallet btn btn-primary">
+                <a class="btn btn-primary" href="{% url 'add_wallet' %}">Adicionar Carteira</a>
+            </button>
+        </div>
+        <div class="container">
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for wallet in wallets %}
+                            <tr>
+                              <td>{{ wallet.name }}</td>
+                              <td>{{ wallet.description }}</td>
+                              <td>
+                                <button class="add-wallet btn btn-success btn-sm">
+                                  <a class="btn btn-success btn-sm" href="{% url 'wallet' wallet.id %}">Editar</a>
+                                </button>
+                              </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
