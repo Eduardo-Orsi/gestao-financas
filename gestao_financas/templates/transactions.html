@@ -6,7 +6,10 @@
   <div class="wrapper-container">
     <h2>Transações</h2>
     <button class="add-wallet btn btn-primary">
-      <a class="btn btn-primary" href="{% url 'add_transaction' %}">Adicionar Transação</a>
+      <a class="btn btn-primary" href="{% url 'add_transaction' 'expense' %}">Adicionar Despesa</a>
+    </button>
+    <button class="add-wallet btn btn-primary">
+      <a class="btn btn-primary" href="{% url 'add_transaction' 'revenue' %}">Adicionar Receita</a>
     </button>
   </div>
   <div class="container">
@@ -21,6 +24,7 @@
             <th>Categoria</th>
             <th>Carteira</th>
             <th>Tipo</th>
+            <th>Editar</th>
           </tr>
         </thead>
         <tbody>
@@ -35,7 +39,7 @@
             <td>Receita</td>
             <td>
               <button class="add-wallet btn btn-success btn-sm">
-                <a class="btn btn-success btn-sm" href="{% url 'transactions' revenue.id %}">Editar</a>
+                <a class="btn btn-success btn-sm" href="{% url 'transaction' 'revenue' revenue.id %}">Editar</a>
               </button>
             </td>
           </tr>
@@ -51,7 +55,7 @@
             <td>Gasto</td>
             <td>
               <button class="add-wallet btn btn-success btn-sm">
-                <a class="btn btn-success btn-sm" href="{% url 'transactions' expense.id %}">Editar</a>
+                <a class="btn btn-success btn-sm" href="{% url 'transaction' 'expense' expense.id %}">Editar</a>
               </button>
             </td>
           </tr>

@@ -32,13 +32,13 @@
               <label for="description" class="form-label">Valor</label>
               <input name="value" type="number" class="form-control" required id="value"
                 placeholder="Valor"
-                value="{% if transaction.value %}{{ transaction.value }}{% endif %}">
+                value="{% if value %}{{ value }}{% endif %}">
             </div>
 
             <h5>Recorrente</h5>
             <div class="my-3">
               <div class="form-check">
-                <input value="1" id="recurring" name="recurring" type="radio" class="form-check-input">
+                <input value="1" id="recurring" name="recurring" type="radio" class="form-check-input" {% if transaction.recurring %} checked {% endif %}>
                 <label class="form-check-label" for="recurring">Recorrente</label>
               </div>
 
@@ -51,22 +51,55 @@
             <div class="col-12">
               <label for="date" class="form-label">Data</label>
               <div class="input-group has-validation">
-                <input name="name" type="date" class="form-control" id="date" required
-                  value="{% if transaction.name %}{{ transaction.name }}{% endif %}">
+                <input name="date" type="date" class="form-control" id="date" required
+                  value="{% if date %}{{ date }}{% endif %}">
               </div>
             </div>
 
-            {% if not transaction %}
-            <h5>Tipo</h5>
-            <div class="form-check">
-              <input value="1" name="type" type="radio" class="form-check-input" id="revenue">
-              <label class="form-check-label" for="revenue">Receita</label>
+            <div style="display: flex; justify-content: space-between;">
+              <div class="col-lg-5">
+                <label for="wallet" class="form-label">Carteira</label>
+                <select name="wallet" class="form-select" id="wallet" required>
+                  <option value="0" disabled selected>Selecione...</option>
+                  {% for wallet in wallets %}
+                  {% if wallet.id == transaction.wallet_id.id}
+                    <option value="{{ wallet.id }}" {% if wallet.id == transaction.wallet_id.id %} selected {% endif %}>{{ wallet.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              
+              {% if type == "revenue" %}
+              <div class="col-lg-5">
+                <label for="category" class="form-label">Categoria</label>
+                <select name="category" class="form-select" id="category" required>
+                  <option value="0" disabled selected>Selecione...</option>
+                  {% for category in revenue_categorys %}
+                  <option value="{{ category.id }}" {% if category.id == transaction.category_id.id %} selected {% endif %}>{{ category.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              {% endif %}
+
+              {% if type == "expense" %}
+              <div class="col-lg-5">
+                <label for="category" class="form-label">Categoria</label>
+                <select name="category" class="form-select" id="category" required>
+                  <option value="0" disabled selected>Selecione...</option>
+                  {% for category in expense_categorys %}
+                  <option value="{{ category.id }}" {% if category.id == transaction.category_id.id %} selected {% endif %}>{{ category.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              {% endif %}
+
             </div>
 
-            <div class="form-check">
-              <input value="1" name="type" type="radio" class="form-check-input" id="expense">
-              <label class="form-check-label" for="expense">Despesa</label>
-            </div>
+            {% if type == "revenue" %}
+            <input type="hidden" value="{{ type }}" name="type">
+            {% endif %}
+
+            {% if type == "expense" %}
+            <input type="hidden" value="{{ type }}" name="type">
             {% endif %}
 
             {% if transaction %}

@@ -170,37 +170,45 @@ def transactions(request: HttpRequest, pk = None):
     return render(request, 'transactions.html', context)
 
 @login_required()
-def add_transaction(request: HttpRequest):
+def add_transaction(request: HttpRequest, input_type = None, pk = None):
+    user_id = request.user.id
 
     if request.method == "POST":
         name = request.POST.get("name", None)
         value = request.POST.get("value", None)
-        wallet_id = request.POST.get("wallet_id", None)
+        wallet_id = request.POST.get("wallet", None)
         recurring = request.POST.get("recurring", None)
-        category_id = request.POST.get("category_id", None)
+        category_id = request.POST.get("category", None)
         date = request.POST.get("date", None)
-        is_expense = request.POST.get("type", None)
-        is_revenue = request.POST.get("type", None)
+        transaction_type = request.POST.get("type", None)
 
-        if not name:
-            messages.error(request, "O nome da transferência é necessário")
-            return redirect("transactions")
+        is_revenue = False
+        is_expense = False
+
+        if transaction_type == "revenue":
+            is_revenue = True
+        else:
+            is_expense = True
+
+        # if not name:
+        #     messages.error(request, "O nome da transferência é necessário")
+        #     return render(request, 'add_transaction.html', {})
             
-        if not value:
-            messages.error(request, "O valor da transferência é necessário")
-            return redirect("transactions")
+        # if not value:
+        #     messages.error(request, "O valor da transferência é necessário")
+        #     return render(request, 'add_transaction.html', {})
         
-        if not wallet_id:
-            messages.error(request, "A carteira da transferência é necessária")
-            return redirect("transactions")
+        # if not wallet_id:
+        #     messages.error(request, "A carteira da transferência é necessária")
+        #     return redirect("transactions")
         
-        if not category_id:
-            messages.error(request, "A categoria da transferência é necessária")
-            return redirect("transactions")
+        # if not category_id:
+        #     messages.error(request, "A categoria da transferência é necessária")
+        #     return redirect("transactions")
         
-        if not date:
-            messages.error(request, "A data da transferência é necessária")
-            return redirect("transactions")
+        # if not date:
+        #     messages.error(request, "A data da transferência é necessária")
+        #     return render(request, 'add_transaction.html', {})
         
         recurring = bool(int(recurring))
 
@@ -223,14 +231,39 @@ def add_transaction(request: HttpRequest):
                 value = value,
                 wallet_id = Wallet.objects.get(id=wallet_id),
                 recurring = recurring,
-                category_id = RevenueCategory.objects.get(id=category_id),
+                category_id = ExpenseCategory.objects.get(id=category_id),
                 date = date
             )
             expense.save()
 
         return transactions(request)
     else:
-        return render(request, 'add_transaction.html', {})
+        wallets = Wallet.objects.filter(user_id=user_id)
+        revenue_categorys = RevenueCategory.objects.filter(user_id=user_id)
+        expense_categorys = ExpenseCategory.objects.filter(user_id=user_id)
+
+        context = {
+            "wallets": wallets,
+            "revenue_categorys": revenue_categorys,
+            "expense_categorys": expense_categorys,
+            "type": input_type
+        }
+
+        if pk:
+
+            if input_type == "revenue":
+                revenue = Revenue.objects.get(id=pk)
+                context["transaction"] = revenue
+                context["date"] = revenue.date.strftime("%Y-%m-%d")
+                context["value"] = str(revenue.value)
+
+            else:
+                expense = Expense.objects.get(id=pk)
+                context["transaction"] = expense
+                context["date"] = expense.date.strftime("%Y-%m-%d")
+                context["value"] = str(expense.value)
+
+        return render(request, 'add_transaction.html', context)
     
 @login_required
 def delete_transaction(request: HttpRequest, pk = None):
