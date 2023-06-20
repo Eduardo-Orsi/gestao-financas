@@ -91,74 +91,6 @@ def add_wallet(request: HttpRequest):
 def transactions(request: HttpRequest, pk = None):
     user_id = request.user.id
 
-    if pk:
-        revenue = None
-        expense = None
-
-        try:
-            revenue = Revenue.objects.get(id=pk)
-        except:
-            expense = Expense.objects.get(id=pk)
-
-        if not request.method == "POST":
-            context = {}
-            context["wallets"] = Wallet.objects.filter(user_id=user_id)
-            if revenue:
-                context["transaction"] = revenue
-            else:
-                context["transaction"] = expense
-            
-            return render(request, "add_transaction.html", context)
-        
-        else:
-            name = request.POST.get("name", None)
-            value = request.POST.get("value", None)
-            wallet_id = request.POST.get("wallet_id", None)
-            recurring = request.POST.get("recurring", None)
-            category_id = request.POST.get("category_id", None)
-            date = request.POST.get("date", None)
-
-            if not name:
-                messages.error(request, "O nome da transferência é necessário")
-                return redirect("transactions")
-            
-            if not value:
-                messages.error(request, "O valor da transferência é necessário")
-                return redirect("transactions")
-            
-            if not wallet_id:
-                messages.error(request, "A carteira da transferência é necessária")
-                return redirect("transactions")
-            
-            if not category_id:
-                messages.error(request, "A categoria da transferência é necessária")
-                return redirect("transactions")
-            
-            if not date:
-                messages.error(request, "A data da transferência é necessária")
-                return redirect("transactions")
-            
-            recurring = bool(int(recurring))
-
-            if revenue:
-                revenue.name = name
-                revenue.value = value
-                revenue.wallet_id = Wallet.objects.get(id=wallet_id)
-                revenue.recurring = recurring
-                revenue.category_id = RevenueCategory.objects.get(id=category_id)
-                revenue.date = date
-                revenue.save()
-            else:
-                expense.name = name
-                expense.value = value
-                expense.wallet_id = Wallet.objects.get(id=wallet_id)
-                expense.recurring = recurring
-                expense.category_id = ExpenseCategory.objects.get(id=category_id)
-                expense.date = date
-                expense.save()
-
-            return transactions(request)
-
     expenses = Expense.objects.filter(user_id=user_id)
     revenues = Revenue.objects.filter(user_id=user_id)
 
@@ -190,51 +122,71 @@ def add_transaction(request: HttpRequest, input_type = None, pk = None):
         else:
             is_expense = True
 
-        # if not name:
-        #     messages.error(request, "O nome da transferência é necessário")
-        #     return render(request, 'add_transaction.html', {})
+        if not name:
+            messages.error(request, "O nome da transferência é necessário")
+            return render(request, 'add_transaction.html', {})
             
-        # if not value:
-        #     messages.error(request, "O valor da transferência é necessário")
-        #     return render(request, 'add_transaction.html', {})
+        if not value:
+            messages.error(request, "O valor da transferência é necessário")
+            return render(request, 'add_transaction.html', {})
         
-        # if not wallet_id:
-        #     messages.error(request, "A carteira da transferência é necessária")
-        #     return redirect("transactions")
+        if not wallet_id:
+            messages.error(request, "A carteira da transferência é necessária")
+            return redirect("transactions")
         
-        # if not category_id:
-        #     messages.error(request, "A categoria da transferência é necessária")
-        #     return redirect("transactions")
+        if not category_id:
+            messages.error(request, "A categoria da transferência é necessária")
+            return redirect("transactions")
         
-        # if not date:
-        #     messages.error(request, "A data da transferência é necessária")
-        #     return render(request, 'add_transaction.html', {})
+        if not date:
+            messages.error(request, "A data da transferência é necessária")
+            return render(request, 'add_transaction.html', {})
         
         recurring = bool(int(recurring))
 
         if is_revenue:
-            revenue = Revenue(
-                user_id = request.user,
-                name = name,
-                value = value,
-                wallet_id = Wallet.objects.get(id=wallet_id),
-                recurring = recurring,
-                category_id = RevenueCategory.objects.get(id=category_id),
-                date = date
-            )
-            revenue.save()
+            try:
+                revenue = Revenue.objects.get(id=pk)
+                revenue.name = name
+                revenue.value = value
+                revenue.wallet_id = Wallet.objects.get(id=wallet_id)
+                revenue.recurring = recurring
+                revenue.category_id = RevenueCategory.objects.get(id=category_id)
+                revenue.date = date
+                revenue.save()
+            except:
+                revenue = Revenue(
+                    user_id = request.user,
+                    name = name,
+                    value = value,
+                    wallet_id = Wallet.objects.get(id=wallet_id),
+                    recurring = recurring,
+                    category_id = RevenueCategory.objects.get(id=category_id),
+                    date = date
+                )
+                revenue.save()
 
         if is_expense:
-            expense = Expense(
-                user_id = request.user,
-                name = name,
-                value = value,
-                wallet_id = Wallet.objects.get(id=wallet_id),
-                recurring = recurring,
-                category_id = ExpenseCategory.objects.get(id=category_id),
-                date = date
-            )
-            expense.save()
+            try:
+                expense = Expense.objects.get(id=pk)
+                expense.name = name
+                expense.value = value
+                expense.wallet_id = Wallet.objects.get(id=wallet_id)
+                expense.recurring = recurring
+                expense.category_id = ExpenseCategory.objects.get(id=category_id)
+                expense.date = date
+                expense.save()
+            except:
+                expense = Expense(
+                    user_id = request.user,
+                    name = name,
+                    value = value,
+                    wallet_id = Wallet.objects.get(id=wallet_id),
+                    recurring = recurring,
+                    category_id = ExpenseCategory.objects.get(id=category_id),
+                    date = date
+                )
+                expense.save()
 
         return transactions(request)
     else:
@@ -314,8 +266,7 @@ def categorys(request: HttpRequest, pk = None):
             essential = request.POST.get("essential", None)
             is_expense = request.POST.get("expense", None)
             is_revenue = request.POST.get("revenue", None)
-            print(essential)
-
+            
             if not name:
                 messages.error(request, "O nome da categoria é necessário")
                 return redirect("categorys")
@@ -325,7 +276,6 @@ def categorys(request: HttpRequest, pk = None):
                 return redirect("categorys")
         
             essential = bool(int(essential))
-            print(essential)
 
             if revenue_category:
                 revenue_category.name = name
