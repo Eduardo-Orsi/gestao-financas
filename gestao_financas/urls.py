@@ -5,7 +5,6 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('profile/', views.profile, name='profile'),
 
     path('categorys/', views.categorys, name='categorys'),
     path('categorys/<uuid:pk>/', views.categorys, name='categorys'),
@@ -26,3 +25,5 @@ urlpatterns = [
     path('transactions/add', views.add_transaction, name='add_transaction'),
     path('transactions/add/<str:input_type>/', views.add_transaction, name='add_transaction'),
 ]
+
+# handler404 = "gestao_financas.views.page_not_found"

@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.http.request import HttpRequest
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 
 from .models import UserProfile
@@ -73,3 +74,26 @@ def register_user(request: HttpRequest):
     
     else:
         return render(request, 'register.html', {})
+    
+@login_required
+def profile(request: HttpRequest):
+    user_id = request.user.id
+
+    if request.method == "POST":
+        email = request.POST.get("email", None)
+        first_name = request.POST.get("first_name", None)
+        last_name = request.POST.get("last_name", None)
+
+        user_profile = UserProfile.objects.get(id=user_id)
+        user_profile.email = email
+        user_profile.first_name = first_name
+        user_profile.last_name = last_name
+        user_profile.save()
+        return redirect("profile")
+
+    user_profile = UserProfile.objects.get(id=user_id)
+    context = {
+        "user_profile": user_profile
+    }
+
+    return render(request, "profile.html", context)

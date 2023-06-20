@@ -11,10 +11,6 @@ def home(request: HttpRequest):
     return render(request, 'home.html', {})
 
 @login_required()
-def profile(request: HttpRequest):
-    return render(request, "profile.html", {})
-
-@login_required()
 def wallet(request: HttpRequest, pk = None):
     user_id = request.user.id
     if pk:
@@ -266,7 +262,7 @@ def categorys(request: HttpRequest, pk = None):
             essential = request.POST.get("essential", None)
             is_expense = request.POST.get("expense", None)
             is_revenue = request.POST.get("revenue", None)
-            
+
             if not name:
                 messages.error(request, "O nome da categoria é necessário")
                 return redirect("categorys")
@@ -372,3 +368,6 @@ def add_report(request: HttpRequest):
         return render(request, 'add_report.html', {})
     else:
         return render(request, 'add_report.html', {})
+    
+def page_not_found(request: HttpRequest, exception):
+    return render(request, "404.html", {}, status=404)
