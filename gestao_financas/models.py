@@ -62,7 +62,7 @@ class ExpenseCategory(models.Model):
 class Expense(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False, unique=True)
     user_id = models.ForeignKey(to=UserProfile, on_delete=models.CASCADE)
-    wallet = models.ForeignKey(to=Wallet, on_delete=models.CASCADE, null=True, blank=True)
+    wallet_id = models.ForeignKey(to=Wallet, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100, null=False)
     value = models.FloatField(null=False)
     recurring = models.BooleanField(default=False)

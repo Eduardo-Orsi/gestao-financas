@@ -2,47 +2,64 @@
 
 {% block content %}
 
-    <div class="bogo-wallet-container">
-        <div class="wrapper-container">
-            <h2>Transações</h2>
-            <button class="add-wallet btn btn-primary">
-                <a class="btn btn-primary" href="{% url 'add_transaction' %}">Adicionar Transação</a>
-            </button>
-        </div>
-        <div class="container">
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        {% for wallet in wallets %}
-                            <tr>
-                                <td>wallet.name</td>
-                                <td>wallet.description</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                    <!-- <tbody>
-                      <tr>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                      </tr>
-                      <tr>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                      </tr>
-                      <tr>
-                        <th>name</th>
-                        <td>@twitter</td>
-                      </tr>
-                    </tbody> -->
-                  </table>
-            </div>
-        </div>
+<div class="bogo-wallet-container">
+  <div class="wrapper-container">
+    <h2>Transações</h2>
+    <button class="add-wallet btn btn-primary">
+      <a class="btn btn-primary" href="{% url 'add_transaction' %}">Adicionar Transação</a>
+    </button>
+  </div>
+  <div class="container">
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Valor</th>
+            <th>Recorrente</th>
+            <th>Data</th>
+            <th>Categoria</th>
+            <th>Carteira</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for revenue in revenues %}
+          <tr>
+            <td>{{ revenue.name }}</td>
+            <td>{{ revenue.value }}</td>
+            <td>{{ revenue.recurring }}</td>
+            <td>{{ revenue.date }}</td>
+            <td>{{ revenue.category_id.name }}</td>
+            <td>{{ revenue.wallet_id.name }}</td>
+            <td>Receita</td>
+            <td>
+              <button class="add-wallet btn btn-success btn-sm">
+                <a class="btn btn-success btn-sm" href="{% url 'transactions' revenue.id %}">Editar</a>
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+          {% for expense in expenses %}
+          <tr>
+            <td>{{ expense.name }}</td>
+            <td>{{ expense.value }}</td>
+            <td>{{ expense.recurring }}</td>
+            <td>{{ expense.date }}</td>
+            <td>{{ expense.category_id.name }}</td>
+            <td>{{ expense.wallet_id.name }}</td>
+            <td>Gasto</td>
+            <td>
+              <button class="add-wallet btn btn-success btn-sm">
+                <a class="btn btn-success btn-sm" href="{% url 'transactions' expense.id %}">Editar</a>
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+  </div>
+</div>
 
 {% endblock %}

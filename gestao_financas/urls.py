@@ -21,5 +21,7 @@ urlpatterns = [
     path('report/add', views.add_report, name='add_report'),
 
     path('transactions/', views.transactions, name='transactions'),
+    path('transactions/<uuid:pk>/', views.add_transaction, name='transaction'),
+    path('transactions/<uuid:pk>/delete/', views.delete_transaction, name='delete_transaction'),
     path('transactions/add', views.add_transaction, name='add_transaction'),
 ]

@@ -3,33 +3,81 @@
 {% block content %}
 
 <div class="bogo-wallet-container">
-    <div class="wrapper-container">
-        <h2> Adicionar Transação</h2>
-    </div>
-    <div class="container">
-        <div class="table-container">
-            <div>
-                <form class="needs-validation" method="POST">
-                  {% csrf_token %}
-                  <div class="row g-3">
-        
-                    <div class="col-12">
-                      <label for="username" class="form-label">Nome</label>
-                      <div class="input-group has-validation">
-                        <input type="text" class="form-control" id="name" placeholder="Nome do transação" required>
-                      </div>
-                    </div>
-        
-                    <div class="col-12">
-                      <label for="file-type" class="form-label">Descrição</label>
-                      <input name="file-type" type="text" class="form-control" id="file-type" placeholder="Descrição do transação">
-                    </div>
-        
-                  <button class="w-100 btn btn-primary btn-lg" type="submit">Criar</button>
-                </form>
+  <div class="wrapper-container">
+    {% if transaction %}
+    <h2> Atualizar Transação</h2>
+    <button class="add-wallet btn btn-danger">
+      <a class="btn btn-danger" href="{% url 'delete_transaction' transaction.id %}">Deletar Transação</a>
+    </button>
+    {% else %}
+    <h2> Adicionar Transação</h2>
+    {% endif %}
+  </div>
+  <div class="container">
+    <div class="table-container">
+      <div>
+        <form class="needs-validation" method="POST">
+          {% csrf_token %}
+          <div class="row g-3">
+
+            <div class="col-12">
+              <label for="name" class="form-label">Nome</label>
+              <div class="input-group has-validation">
+                <input name="name" type="text" class="form-control" id="name" placeholder="Nome da Transação" required
+                  value="{% if transaction.name %}{{ transaction.name }}{% endif %}">
               </div>
-        </div>
+            </div>
+
+            <div class="col-12 mb-3">
+              <label for="description" class="form-label">Valor</label>
+              <input name="value" type="number" class="form-control" required id="value"
+                placeholder="Valor"
+                value="{% if transaction.value %}{{ transaction.value }}{% endif %}">
+            </div>
+
+            <h5>Recorrente</h5>
+            <div class="my-3">
+              <div class="form-check">
+                <input value="1" id="recurring" name="recurring" type="radio" class="form-check-input">
+                <label class="form-check-label" for="recurring">Recorrente</label>
+              </div>
+
+              <div class="form-check">
+                <input value="0" id="not-recurring" name="recurring" type="radio" class="form-check-input" {% if not transaction.recurring %} checked {% endif %}>
+                <label class="form-check-label" for="recurring">Não Recorrente</label>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="date" class="form-label">Data</label>
+              <div class="input-group has-validation">
+                <input name="name" type="date" class="form-control" id="date" required
+                  value="{% if transaction.name %}{{ transaction.name }}{% endif %}">
+              </div>
+            </div>
+
+            {% if not transaction %}
+            <h5>Tipo</h5>
+            <div class="form-check">
+              <input value="1" name="type" type="radio" class="form-check-input" id="revenue">
+              <label class="form-check-label" for="revenue">Receita</label>
+            </div>
+
+            <div class="form-check">
+              <input value="1" name="type" type="radio" class="form-check-input" id="expense">
+              <label class="form-check-label" for="expense">Despesa</label>
+            </div>
+            {% endif %}
+
+            {% if transaction %}
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Atualizar</button>
+            {% else %}
+            <button class="w-100 btn btn-primary btn-lg" type="submit">Adicionar</button>
+            {% endif %}
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 
 {% endblock %}

@@ -37,16 +37,24 @@
             <h4>Essencial</h4>
             <div class="my-3">
               <div class="form-check">
-                <input value="0" id="essential" name="essential" type="radio" class="form-check-input" {% if category.essential %} checked {% endif %} required>
+                <input value="1" id="essential" name="essential" type="radio" class="form-check-input" {% if category.essential %} checked {% endif %} required>
                 <label class="form-check-label" for="credit">Essencial</label>
               </div>
 
               <div class="form-check">
-                <input value="1" id="not-essential" name="essential" type="radio" class="form-check-input" {% if not category.essential %} checked {% endif %} required>
+                <input value="0" id="not-essential" name="essential" type="radio" class="form-check-input" {% if not category.essential %} checked {% endif %} required>
                 <label class="form-check-label" for="essential">Não essencial</label>
               </div>
             </div>
-            
+
+            <h4>Data</h4>
+            <div class="col-12">
+              <label for="date" class="form-label">Data</label>
+              <div class="input-group has-validation">
+                <input name="name" type="text" class="form-control" id="date" placeholder="Nome Carteira" required value="{% if category.name %}{{ category.name }}{% endif %}">
+              </div>
+            </div>
+
             {% if not category %}
               <h4>Tipo</h4>
               <div class="form-check">
