@@ -3,45 +3,70 @@
 {% block content %}
 
 <div class="bogo-wallet-container">
-    <div class="wrapper-container">
-        <h2> Adicionar Categoria</h2>
-    </div>
-    <div class="container">
-        <div class="table-container">
-            <div>
-                <form class="needs-validation" method="POST">
-                  {% csrf_token %}
-                  <div class="row g-3">
-        
-                    <div class="col-12">
-                      <label for="username" class="form-label">Nome</label>
-                      <div class="input-group has-validation">
-                        <input type="text" class="form-control" id="name" placeholder="Nome Carteira" required>
-                      </div>
-                    </div>
-        
-                    <div class="col-12 mb-3">
-                      <label for="description" class="form-label">Descrição <span class="text-body-secondary">(Optional)</span></label>
-                      <input type="text" class="form-control" id="description" placeholder="Descrição da certeira">
-                    </div>
-                    
-                    <h4>Essencial</h4>
-                    <div class="my-3">
-                        <div class="form-check">
-                          <input id="essential" name="essential" type="radio" class="form-check-input" checked required>
-                          <label class="form-check-label" for="credit">Essencial</label>
-                        </div>
-                        <div class="form-check">
-                          <input id="not-essential" name="essential" type="radio" class="form-check-input" required>
-                          <label class="form-check-label" for="debit">Não essencial</label>
-                        </div>
-                    </div>
-        
-                  <button class="w-100 btn btn-primary btn-lg" type="submit">Criar</button>
-                </form>
+  <div class="wrapper-container">
+    {% if category %}
+    <h2> Atualizar Categoria</h2>
+    <button class="add-wallet btn btn-danger">
+      <a class="btn btn-danger" href="{% url 'delete_category' category.id %}">Deletar Categoria</a>
+    </button>
+    {% else %}
+    <h2> Adicionar Categoria</h2>
+    {% endif %}
+  </div>
+  <div class="container">
+    <div class="table-container">
+      <div>
+        <form class="needs-validation" method="POST">
+          {% csrf_token %}
+          <div class="row g-3">
+
+            <div class="col-12">
+              <label for="name" class="form-label">Nome</label>
+              <div class="input-group has-validation">
+                <input name="name" type="text" class="form-control" id="name" placeholder="Nome Carteira" required>
               </div>
-        </div>
+            </div>
+
+            <div class="col-12 mb-3">
+              <label for="description" class="form-label">Descrição <span
+                  class="text-body-secondary">(Optional)</span></label>
+              <input name="description" type="text" class="form-control" id="description"
+                placeholder="Descrição da certeira">
+            </div>
+
+            <h4>Essencial</h4>
+            <div class="my-3">
+              <div class="form-check">
+                <input value="0" id="essential" name="essential" type="radio" class="form-check-input" checked required>
+                <label class="form-check-label" for="credit">Essencial</label>
+              </div>
+
+              <div class="form-check">
+                <input value="1" id="not-essential" name="essential" type="radio" class="form-check-input" required>
+                <label class="form-check-label" for="essential">Não essencial</label>
+              </div>
+            </div>
+
+            <h4>Tipo</h4>
+            <div class="form-check">
+              <input value="1" name="revenue" type="checkbox" class="form-check-input" id="revenue">
+              <label class="form-check-label" for="same-address">Receita</label>
+            </div>
+
+            <div class="form-check">
+              <input value="1" name="expense" type="checkbox" class="form-check-input" id="expense">
+              <label class="form-check-label" for="expense">Despesa</label>
+            </div>
+
+            {% if category %}
+              <button class="w-100 btn btn-primary btn-lg" type="submit">Atualizar</button>
+            {% else %}
+              <button class="w-100 btn btn-primary btn-lg" type="submit">Adicionar</button>
+            {% endif %}
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 
 {% endblock %}

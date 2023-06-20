@@ -2,47 +2,55 @@
 
 {% block content %}
 
-    <div class="bogo-wallet-container">
-        <div class="wrapper-container">
-            <h2>Categorias</h2>
-            <button class="add-wallet btn btn-primary">
-                <a class="btn btn-primary" href="{% url 'add_categorys' %}">Adicionar Categorias</a>
-            </button>
-        </div>
-        <div class="container">
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        {% for wallet in wallets %}
-                            <tr>
-                                <td>wallet.name</td>
-                                <td>wallet.description</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                    <!-- <tbody>
-                      <tr>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                      </tr>
-                      <tr>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                      </tr>
-                      <tr>
-                        <th>name</th>
-                        <td>@twitter</td>
-                      </tr>
-                    </tbody> -->
-                  </table>
-            </div>
-        </div>
+<div class="bogo-wallet-container">
+  <div class="wrapper-container">
+    <h2>Categorias</h2>
+    <button class="add-wallet btn btn-primary">
+      <a class="btn btn-primary" href="{% url 'add_categorys' %}">Adicionar Categorias</a>
+    </button>
+  </div>
+  <div class="container">
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Essencial</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for revenue in revenue_categorys %}
+          <tr>
+            <td>{{ revenue.name }}</td>
+            <td>{{ revenue.description }}</td>
+            <td>{{ revenue.essential }}</td>
+            <td>Receita</td>
+            <td>
+              <button class="add-wallet btn btn-success btn-sm">
+                <a class="btn btn-success btn-sm" href="{% url 'categorys' revenue.id %}">Editar</a>
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+          {% for expense in expense_categorys %}
+          <tr>
+            <td>{{ expense.name }}</td>
+            <td>{{ expense.description }}</td>
+            <td>{{ expense.essential }}</td>
+            <td>Gasto</td>
+            <td>
+              <button class="add-wallet btn btn-success btn-sm">
+                <a class="btn btn-success btn-sm" href="{% url 'categorys' expense.id %}">Editar</a>
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+  </div>
+</div>
 
 {% endblock %}

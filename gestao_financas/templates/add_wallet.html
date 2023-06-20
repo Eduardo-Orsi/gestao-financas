@@ -7,7 +7,7 @@
       {% if wallet %}
         <h2> Atualizar Carteira</h2>
         <button class="add-wallet btn btn-danger">
-          <a class="btn btn-danger" href="{% url 'wallet' wallet.id %}">Deletar Carteira</a>
+          <a class="btn btn-danger" href="{% url 'delete_wallet' wallet.id %}">Deletar Carteira</a>
         </button>
       {% else %}
         <h2> Adicionar Carteira</h2>
