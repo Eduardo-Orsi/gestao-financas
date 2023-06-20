@@ -7,7 +7,7 @@
     {% if category %}
     <h2> Atualizar Categoria</h2>
     <button class="add-wallet btn btn-danger">
-      <a class="btn btn-danger" href="{% url 'delete_category' category.id %}">Deletar Categoria</a>
+      <a class="btn btn-danger" href="{% url 'delete_categorys' category.id %}">Deletar Categoria</a>
     </button>
     {% else %}
     <h2> Adicionar Categoria</h2>
@@ -23,7 +23,7 @@
             <div class="col-12">
               <label for="name" class="form-label">Nome</label>
               <div class="input-group has-validation">
-                <input name="name" type="text" class="form-control" id="name" placeholder="Nome Carteira" required>
+                <input name="name" type="text" class="form-control" id="name" placeholder="Nome Carteira" required value="{% if category.name %}{{ category.name }}{% endif %}">
               </div>
             </div>
 
@@ -31,32 +31,34 @@
               <label for="description" class="form-label">Descrição <span
                   class="text-body-secondary">(Optional)</span></label>
               <input name="description" type="text" class="form-control" id="description"
-                placeholder="Descrição da certeira">
+                placeholder="Descrição da certeira" value="{% if category.description %}{{ category.description }}{% endif %}">
             </div>
 
             <h4>Essencial</h4>
             <div class="my-3">
               <div class="form-check">
-                <input value="0" id="essential" name="essential" type="radio" class="form-check-input" checked required>
+                <input value="0" id="essential" name="essential" type="radio" class="form-check-input" {% if category.essential %} checked {% endif %} required>
                 <label class="form-check-label" for="credit">Essencial</label>
               </div>
 
               <div class="form-check">
-                <input value="1" id="not-essential" name="essential" type="radio" class="form-check-input" required>
+                <input value="1" id="not-essential" name="essential" type="radio" class="form-check-input" {% if not category.essential %} checked {% endif %} required>
                 <label class="form-check-label" for="essential">Não essencial</label>
               </div>
             </div>
+            
+            {% if not category %}
+              <h4>Tipo</h4>
+              <div class="form-check">
+                <input value="1" name="revenue" type="checkbox" class="form-check-input" id="revenue">
+                <label class="form-check-label" for="same-address">Receita</label>
+              </div>
 
-            <h4>Tipo</h4>
-            <div class="form-check">
-              <input value="1" name="revenue" type="checkbox" class="form-check-input" id="revenue">
-              <label class="form-check-label" for="same-address">Receita</label>
-            </div>
-
-            <div class="form-check">
-              <input value="1" name="expense" type="checkbox" class="form-check-input" id="expense">
-              <label class="form-check-label" for="expense">Despesa</label>
-            </div>
+              <div class="form-check">
+                <input value="1" name="expense" type="checkbox" class="form-check-input" id="expense">
+                <label class="form-check-label" for="expense">Despesa</label>
+              </div>
+            {% endif %}
 
             {% if category %}
               <button class="w-100 btn btn-primary btn-lg" type="submit">Atualizar</button>
